@@ -48,12 +48,12 @@ namespace RhythmApp
       var countryOfOrigin = Console.ReadLine();
       Console.WriteLine("How many members are in the band?");
       var numberOfMembers = Console.ReadLine();
-      Console.WriteLine("Does your band have a website?");
+      Console.WriteLine("What is the band's website?");
       var website = Console.ReadLine();
       Console.WriteLine("What style is your band?");
       var style = Console.ReadLine();
-      Console.WriteLine("Is your band signed? True or False?");
-      var isSigned = bool.Parse(Console.ReadLine());
+      Console.WriteLine("Is your band signed?");
+      var isSigned = YesOrNo();
       Console.WriteLine("Who should we contact to get in touch with your band?");
       var personOfContact = Console.ReadLine();
       Console.WriteLine($"What is {personOfContact}'s phone number?");
@@ -71,6 +71,18 @@ namespace RhythmApp
         ContactPhoneNumber = contactPhoneNumber,
       });
       db.SaveChanges();
+    }
+
+    public bool YesOrNo()
+    {
+      var input = Console.ReadLine();
+      bool theAnswer = input.ToLower() == "yes";
+      return theAnswer;
+    }
+
+    public void AddAlbum()
+    {
+
     }
   }
 }
