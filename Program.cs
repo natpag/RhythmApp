@@ -16,31 +16,43 @@ namespace RhythmApp
         bandManager.PopulateDatabase();
 
 
-        Console.WriteLine("Welcome to your band managing app!");
+        Console.WriteLine("Welcome to Daddy Kool's Record Label!");
         Console.WriteLine("What would you like to do?");
-        // Sign a band
-        // Produce an album (add an album and add a few songs to that album)
-        // let go of a band (update isSigned to false)
-        // resign a band (update isSigned to true)
-        // View all albums for a band
-        // View all the albums, ordered by ReleaseDate
-        // View an Album's songs
-        // view all signed bands
-        // view all unsigned bands
         Console.WriteLine("[S] Sign a band");
-        Console.WriteLine("[P] Produce an album");
-
-        Console.WriteLine("Would you like to add a new band? (y) or (n)");
+        Console.WriteLine("[U] Unsign of a band");
+        Console.WriteLine("[R] Resign a band");
+        Console.WriteLine("[VA] View all of the label's albums");
+        Console.WriteLine("[VS] View all signed bands");
+        Console.WriteLine("[VU] View all unsigned bands");
+        Console.WriteLine("[Q] Quit");
         var input = Console.ReadLine().ToLower();
-        if (input == "y")
+
+        // Sign a band
+        if (input == "s")
         {
           bandManager.AddBand();
         }
-        else if (input == "n")
+        // Let go of a band
+        if (input == "u")
         {
-          Console.WriteLine("Ok bye!");
-          doneManaging = true;
-
+          bandManager.UnSignBand();
+        }
+        // Quit
+        if (input == "q")
+        {
+          Console.WriteLine("Are you sure you want to quit? [y] or [n]");
+          var newInput = Console.ReadLine().ToLower();
+          if (newInput == "y")
+          {
+            Console.WriteLine("Ok bye!");
+            doneManaging = true;
+          }
+          if (newInput == "n")
+          { }
+          else if (newInput != "y" && newInput != "n")
+          {
+            Console.WriteLine("That is not a valid input...");
+          }
         }
       }
     }

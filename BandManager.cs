@@ -73,6 +73,24 @@ namespace RhythmApp
       db.SaveChanges();
     }
 
+    public void UnSignBand()
+    {
+      Console.WriteLine("Which band would you like to remove from the label?");
+      var db = new DatabaseContext();
+      var bands = db.Bands.OrderBy(b => b.Id);
+      foreach (var band in bands)
+      {
+        Console.WriteLine($"{band.Id}:{band.Name}");
+      }
+      var bandId = int.Parse(Console.ReadLine());
+      var theBand = db.Bands.First(b => b.Id == bandId);
+      Console.WriteLine($"Do you want to unsign {theBand.Name}?");
+      var isSigned = !YesOrNo();
+      Console.WriteLine($"You've unsigned {theBand.Name}");
+      theBand.IsSigned = isSigned;
+      db.SaveChanges();
+    }
+
     public bool YesOrNo()
     {
       var input = Console.ReadLine();
@@ -80,7 +98,8 @@ namespace RhythmApp
       return theAnswer;
     }
 
-    public void AddAlbum()
+
+    public void ViewAllSignedBands()
     {
 
     }
