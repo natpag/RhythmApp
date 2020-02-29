@@ -37,6 +37,11 @@ namespace RhythmApp
         {
           bandManager.UnSignBand();
         }
+        // Resign a band
+        if (input == "r")
+        {
+          bandManager.ReSignBand();
+        }
         // Quit
         if (input == "q")
         {

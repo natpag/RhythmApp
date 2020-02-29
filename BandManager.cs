@@ -91,6 +91,24 @@ namespace RhythmApp
       db.SaveChanges();
     }
 
+    public void ReSignBand()
+    {
+      Console.WriteLine("Which band would you like to resign to the label?");
+      var db = new DatabaseContext();
+      var bands = db.Bands.OrderBy(b => b.Id);
+      foreach (var band in bands)
+      {
+        Console.WriteLine($"{band.Id}:{band.Name}");
+      }
+      var bandId = int.Parse(Console.ReadLine());
+      var theBand = db.Bands.First(b => b.Id == bandId);
+      Console.WriteLine($"Do you want to resign {theBand.Name}?");
+      var isSigned = YesOrNo();
+      Console.WriteLine($"You've resigned {theBand.Name}");
+      theBand.IsSigned = isSigned;
+      db.SaveChanges();
+    }
+
     public bool YesOrNo()
     {
       var input = Console.ReadLine();
