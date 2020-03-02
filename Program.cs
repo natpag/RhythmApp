@@ -52,7 +52,6 @@ namespace RhythmApp
         {
           bandManager.ViewAllSignedBands();
           Console.WriteLine("\n");
-          bandManager.WorkingWithABand();
 
         }
         // View all UnSigned Bands

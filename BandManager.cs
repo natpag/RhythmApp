@@ -157,6 +157,81 @@ namespace RhythmApp
         Console.WriteLine($"{band.Id}:{band.Name}");
       }
     }
+    public void AddASong(DatabaseContext db, string input, Album albumToAdd)
+    {
+
+      Console.WriteLine("What is the name of the song?");
+      var songTitle = Console.ReadLine();
+      Console.WriteLine("What are the lyrics to the song? If none, please write N/A");
+      var lyrics = Console.ReadLine();
+      Console.WriteLine("What is the song's length in minutes?");
+      var length = Console.ReadLine();
+      Console.WriteLine("What genre is the song?");
+      var songGenre = Console.ReadLine();
+
+      db.Songs.Add(new Song
+      {
+        Title = songTitle,
+        Lyrics = lyrics,
+        Length = length,
+        Genre = songGenre,
+        AlbumId = albumToAdd.Id,
+      });
+      db.SaveChanges();
+    }
+
+    public void ProduceAnAlbum(DatabaseContext db, int bandId)
+    {
+      Console.WriteLine("What would you like to name the album?");
+      var albumTitle = Console.ReadLine();
+      Console.WriteLine("Is the album explicit?");
+      var isExplicit = YesOrNo();
+      Console.WriteLine("When is the release date?");
+      var releaseDate = DateTime.Parse(Console.ReadLine());
+
+      var albumToAdd = new Album
+      {
+        Title = albumTitle,
+        IsExplicit = isExplicit,
+        ReleaseDate = releaseDate,
+        BandId = bandId,
+      };
+      db.Albums.Add(albumToAdd);
+      db.SaveChanges();
+
+      Console.WriteLine($"Would you like to add a song to you album (y) or (n)?");
+      var input = Console.ReadLine();
+
+      while (input == "y")
+      {
+        AddASong(db, input, albumToAdd);
+
+        Console.WriteLine("Would you like to add another song (y) or (n)?");
+        input = Console.ReadLine();
+      }
+      Console.WriteLine("You've produced an album!");
+    }
+    public void ViewAllAlbumsforBand(DatabaseContext db, int bandId)
+    {
+      Console.WriteLine($"\nHere are all of their albums...");
+      var albums = db.Albums.Where(a => bandId == a.BandId);
+      foreach (var album in albums)
+      {
+        Console.WriteLine($"{album.Id}:{album.Title}");
+      }
+      Console.WriteLine("Please enter the number associated with the particular album you'd like to view?");
+      var albumId = int.Parse(Console.ReadLine());
+      ViewAnAlbum(db, albumId);
+    }
+    public void ViewAnAlbum(DatabaseContext db, int albumId)
+    {
+      Console.WriteLine("Here are all the songs in that album!");
+      var songs = db.Songs.Where(s => albumId == s.AlbumId);
+      foreach (var song in songs)
+      {
+        Console.WriteLine($"{song.Title}");
+      }
+    }
     public void WorkingWithABand()
     {
       Console.WriteLine("Choose a band you'd like to work with...");
@@ -169,73 +244,16 @@ namespace RhythmApp
       var bandId = int.Parse(Console.ReadLine());
       var theBand = db.Bands.First(b => b.Id == bandId);
       Console.WriteLine($"Here are your options for working with {theBand.Name}");
-      Console.WriteLine("\n[P]Produce an album [VA] View all albums");
+      Console.WriteLine("\n[P]Produce an album [V] View all albums");
       var input = Console.ReadLine().ToLower();
       if (input == "p")
       {
-        Console.WriteLine("What would you like to name the album?");
-        var albumTitle = Console.ReadLine();
-        Console.WriteLine("Is the album explicit?");
-        var isExplicit = YesOrNo();
-        Console.WriteLine("When is the release date?");
-        var releaseDate = DateTime.Parse(Console.ReadLine());
-
-        var albumToAdd = new Album
-        {
-          Title = albumTitle,
-          IsExplicit = isExplicit,
-          ReleaseDate = releaseDate,
-          BandId = bandId,
-        };
-        db.Albums.Add(albumToAdd);
-        db.SaveChanges();
-
-        Console.WriteLine($"Would you like to add a song to you album (y) or (n)?");
-        input = Console.ReadLine();
-
-        bool addSong = true;
-        while (addSong)
-        {
-          if (input == "y")
-          {
-            Console.WriteLine("What is the name of the song?");
-            var songTitle = Console.ReadLine();
-            Console.WriteLine("What are the lyrics to the song? If none, please write N/A");
-            var lyrics = Console.ReadLine();
-            Console.WriteLine("What is the song's length in minutes?");
-            var length = Console.ReadLine();
-            Console.WriteLine("What genre is the song?");
-            var songGenre = Console.ReadLine();
-
-            db.Songs.Add(new Song
-            {
-              Title = songTitle,
-              Lyrics = lyrics,
-              Length = length,
-              Genre = songGenre,
-              AlbumId = albumToAdd.Id,
-            });
-            db.SaveChanges();
-
-            Console.WriteLine("Would you like to add another song (y) or (n)?");
-            if (input == "y")
-            {
-              //loop again
-            }
-            if (input == "n")
-            {
-              addSong = false;
-            }
-          }
-
-          if (input == "n")
-          {
-            Console.WriteLine("Okay, your album has no songs listed...");
-            addSong = false;
-          }
-        }
+        ProduceAnAlbum(db, bandId);
       }
-
+      if (input == "v")
+      {
+        ViewAllAlbumsforBand(db, bandId);
+      }
     }
 
   }
