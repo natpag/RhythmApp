@@ -14,33 +14,52 @@ namespace RhythmApp
       {
         var bandManager = new BandManager();
         bandManager.PopulateDatabase();
-
-
-        Console.WriteLine("Welcome to Daddy Kool's Record Label!");
-        Console.WriteLine("What would you like to do?");
-        Console.WriteLine("[S] Sign a band");
-        Console.WriteLine("[U] Unsign of a band");
-        Console.WriteLine("[R] Resign a band");
-        Console.WriteLine("[VA] View all of the label's albums");
-        Console.WriteLine("[VS] View all signed bands");
-        Console.WriteLine("[VU] View all unsigned bands");
-        Console.WriteLine("[Q] Quit");
+        bandManager.OpeningMenu();
         var input = Console.ReadLine().ToLower();
 
         // Sign a band
         if (input == "s")
         {
           bandManager.AddBand();
+          Console.WriteLine("\n");
         }
         // Let go of a band
         if (input == "u")
         {
           bandManager.UnSignBand();
+          Console.WriteLine("\n");
         }
         // Resign a band
         if (input == "r")
         {
           bandManager.ReSignBand();
+          Console.WriteLine("\n");
+        }
+        // Work with a band ---> Produce an album / View all albums
+        if (input == "w")
+        {
+          bandManager.WorkingWithABand();
+          Console.WriteLine("\n");
+        }
+        // View all Label's Albums
+        if (input == "va")
+        {
+          bandManager.ViewAllLabelsAlbums();
+          Console.WriteLine("\n");
+        }
+        // View all Signed Bands
+        if (input == "vs")
+        {
+          bandManager.ViewAllSignedBands();
+          Console.WriteLine("\n");
+          bandManager.WorkingWithABand();
+
+        }
+        // View all UnSigned Bands
+        if (input == "vu")
+        {
+          bandManager.ViewAllUnSignedBands();
+          Console.WriteLine("\n");
         }
         // Quit
         if (input == "q")
