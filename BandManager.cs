@@ -180,16 +180,18 @@ namespace RhythmApp
         Console.WriteLine("When is the release date?");
         var releaseDate = DateTime.Parse(Console.ReadLine());
 
-        db.Albums.Add(new Album
+        var albumToAdd = new Album
         {
           Title = albumTitle,
           IsExplicit = isExplicit,
           ReleaseDate = releaseDate,
           BandId = bandId,
-        });
+        };
+        db.Albums.Add(albumToAdd);
         db.SaveChanges();
 
         Console.WriteLine($"Would you like to add a song to you album (y) or (n)?");
+        input = Console.ReadLine();
 
         bool addSong = true;
         while (addSong)
@@ -211,8 +213,19 @@ namespace RhythmApp
               Lyrics = lyrics,
               Length = length,
               Genre = songGenre,
+              AlbumId = albumToAdd.Id,
             });
             db.SaveChanges();
+
+            Console.WriteLine("Would you like to add another song (y) or (n)?");
+            if (input == "y")
+            {
+              //loop again
+            }
+            if (input == "n")
+            {
+              addSong = false;
+            }
           }
 
           if (input == "n")
